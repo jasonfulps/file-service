@@ -1,4 +1,11 @@
 module.exports = {
+    server: {
+        port: '5000'
+    },
     mongoURI: 'mongodb://localhost:27017/fileserver',
-    secretOrPrivateKey: 'DEVKEY'
-}
+    authentication: {
+        expiresIn: '1d',
+        secretOrPrivateKey: 'DEVKEY',
+        session: false
+    }
+};

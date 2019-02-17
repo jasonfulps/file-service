@@ -9,6 +9,9 @@ const privateKey = config.authentication.secretOrPrivateKey;
 const expiresIn = config.authentication.expiresIn;
 const session = config.authentication.session;
 
+// Load Input Validation
+const validateRegisterInput = require('../../validation/register');
+
 /**
  * @route   GET /api/users/test
  * @desc    Test users route
@@ -22,10 +25,18 @@ router.get('/test', (req, res) => res.json({msg: 'Users route works'}));
  * @access  Public
  */
 router.post('/register', (req, res) => {
+
+    // Validate request
+    const {errors, isValid} = validateRegisterInput(req.body);
+    if(!isValid) {
+        return res.status(400).json(errors);
+    }
+
     User.findOne({email: req.body.email})
         .then(user => {
             if (user) {
-                return res.status(400).json({email: 'Email already exists'});
+                errors.email = 'Email already exists';
+                return res.status(400).json(errors);
             } else {
                 const newUser = new User({
                     name: req.body.name,
@@ -86,7 +97,11 @@ router.post('/login', (req, res) => {
  * @access  Private
  */
 router.get('/current', passport.authenticate('jwt', {session: session}), (req, res) => {
-    res.json(req.user);
+    res.json({
+        id: req.user.id,
+        email: req.user.email,
+        name: req.user.name
+    });
 });
 
 module.exports = router;

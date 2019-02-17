@@ -1,9 +1,8 @@
-const config = require('./config');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
-
+const config = require('./config');
 const users = require('./routes/api/users');
 const files = require('./routes/api/files');
 
@@ -20,7 +19,7 @@ mongoose
 
 // Passport middleware
 app.use(passport.initialize());
-require('./passport')(passport);  // configure passport
+require('./PassportStrategyConfig')(passport);  // configure passport
 
 // ROUTES
 app.use('/api/users', users);

@@ -7,5 +7,15 @@ module.exports = {
         expiresIn: '1d',
         secretOrPrivateKey: 'DEVKEY',
         session: false
+    },
+    validation: {
+        registration: {
+            password: {
+                length: {
+                    min: 6,
+                    max: 30
+                }
+            }
+        }
     }
 };

@@ -1,0 +1,16 @@
+{
+  "DB_CONNECTED": "Database Connected",
+  "SERVER_UP": "Server running on port {{port}}",
+  "LOCALIZATION_STRING_NOT_FOUND": "Unable to find the localization string: {{key}}",
+  "EMAIL_ALREADY_EXISTS": "Email already exists",
+  "NAME_REQUIRED": "Name is required",
+  "EMAIL_REQUIRED": "Email is required",
+  "EMAIL_INVALID": "Invalid email",
+  "USER_REGISTERED": "User registered",
+  "PASSWORD_INCORRECT": "Password incorrect",
+  "PASSWORD_REQUIRED": "Password is required",
+  "PASSWORD_CONFIRMATION_REQUIRED": "Password confirmation is required",
+  "PASSWORDS_MUST_MATCH": "Passwords must match",
+  "USER_REGISTERED": "User registered",
+  "USER_NOT_FOUND": "User not found"
+}

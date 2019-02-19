@@ -1,5 +1,6 @@
 const Validator = require('validator');
 const isEmpty = require('../lib/isEmpty');
+const i = require('../i18n/localize');
 
 module.exports = function validateRegisterInput(data) {
 
@@ -11,28 +12,28 @@ module.exports = function validateRegisterInput(data) {
 
     // Name
     if(Validator.isEmpty(data.name)) {
-        errors.name = 'Name is required';
+        errors.name = i('NAME_REQUIRED');
     }
 
     // Email
     if(Validator.isEmpty(data.email)) {
-        errors.email = 'Email is required';
+        errors.email = i('EMAIL_REQUIRED');
     } else
-    if(Validator.isEmail(data.email)) {
-        errors.email = 'Invalid email';
+    if(!Validator.isEmail(data.email)) {
+        errors.email = i('EMAIL_INVALID');
     }
 
     // Password
     if(Validator.isEmpty(data.password)) {
-        errors.password = 'Password is required';
+        errors.password = i('PASSWORD_REQUIRED');
     }
 
     if(Validator.isEmpty(data.password2)) {
-        errors.password2 = 'Password confirmation is required';
+        errors.password2 = i('PASSWORD_CONFIRMATION_REQUIRED');
     }
 
-    if(Validator.equals(data.password2, data.password)) {
-        errors.password2 = 'Password must match';
+    if(!Validator.equals(data.password2, data.password)) {
+        errors.password2 = i('PASSWORDS_MUST_MATCH');
     }
 
     return {

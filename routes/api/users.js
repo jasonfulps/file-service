@@ -5,19 +5,12 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('../../config');
 const passport = require('passport');
+const logger = require('../../lib/logger');
+const i = require('../../i18n/localize');
 const privateKey = config.authentication.secretOrPrivateKey;
 const expiresIn = config.authentication.expiresIn;
 const session = config.authentication.session;
-
-// Load Input Validation
-const validateRegisterInput = require('../../validation/register');
-
-/**
- * @route   GET /api/users/test
- * @desc    Test users route
- * @access  Public
- */
-router.get('/test', (req, res) => res.json({msg: 'Users route works'}));
+const validateRegistration = require('../../validation/register');
 
 /**
  * @route   GET /api/users/register
@@ -27,7 +20,7 @@ router.get('/test', (req, res) => res.json({msg: 'Users route works'}));
 router.post('/register', (req, res) => {
 
     // Validate request
-    const {errors, isValid} = validateRegisterInput(req.body);
+    const {errors, isValid} = validateRegistration(req.body);
     if(!isValid) {
         return res.status(400).json(errors);
     }
@@ -35,7 +28,7 @@ router.post('/register', (req, res) => {
     User.findOne({email: req.body.email})
         .then(user => {
             if (user) {
-                errors.email = 'Email already exists';
+                errors.email = i("EMAIL_ALREADY_EXISTS");
                 return res.status(400).json(errors);
             } else {
                 const newUser = new User({
@@ -48,8 +41,8 @@ router.post('/register', (req, res) => {
                         if (err) throw err;
                         newUser.password = hash;
                         newUser.save()
-                            .then(user => res.json(user))
-                            .catch(err => console.log(err));
+                            .then(user => res.json({email:user.email, status: i('USER_REGISTERED')}))
+                            .catch(err => logger.error(err));
                     })
                 })
             }
@@ -69,7 +62,7 @@ router.post('/login', (req, res) => {
 
             // Check user
             if (!user) {
-                return res.status(404).json({email: 'Route - User not found'})
+                return res.status(404).json({email: "USER_NOT_FOUND"})
             }
 
             // Verify password
@@ -85,7 +78,7 @@ router.post('/login', (req, res) => {
                             });
                         });
                     } else {
-                        return res.status(400).json({password: 'Password incorrect'})
+                        return res.status(400).json({password: i("USER_PASSWORD_INCORRECT")})
                     }
                 })
         })

@@ -17,5 +17,11 @@ module.exports = {
                 }
             }
         }
+    },
+    i18n: {
+        defaultLanguage: 'EN'
+    },
+    logger: {
+        file: "server.log"
     }
 };

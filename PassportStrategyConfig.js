@@ -9,6 +9,11 @@ const jwtOptions = {};
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 jwtOptions.secretOrKey = config.authentication.secretOrPrivateKey;
 
+/**
+ * Passport Strategy
+ * Request Headers requires valid "Authorization" value.
+ * @param passport
+ */
 module.exports = passport => {
     passport.use(new JwtStrategy(jwtOptions, (jwt_payload, done) => {
         User.findById(jwt_payload.id)
